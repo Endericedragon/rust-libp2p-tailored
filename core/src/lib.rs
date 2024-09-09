@@ -37,6 +37,7 @@
 
 #![cfg_attr(docsrs, feature(doc_cfg, doc_auto_cfg))]
 
+// proto == protocol
 mod proto {
     include!("generated/mod.rs");
     pub use self::{
