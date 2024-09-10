@@ -20,10 +20,11 @@
 
 //! ECDSA keys with secp256r1 curve support.
 
-use super::error::DecodingError;
+use super::error::DecodingError; // 来自quick-protobuf
 use core::cmp;
 use core::fmt;
 use core::hash;
+// 第三方依赖项p256
 use p256::{
     ecdsa::{
         signature::{Signer, Verifier},
@@ -85,7 +86,7 @@ impl From<Keypair> for SecretKey {
     }
 }
 
-/// An ECDSA secret key.
+/// An ECDSA secret key. 私钥用于签名，因此是SigningKey的包装。
 #[derive(Clone)]
 pub struct SecretKey(SigningKey);
 
@@ -121,7 +122,7 @@ impl fmt::Debug for SecretKey {
     }
 }
 
-/// An ECDSA public key.
+/// An ECDSA public key. 公钥用于验证，因此是VerifyingKey的包装。
 #[derive(Clone, Eq, PartialOrd, Ord)]
 pub struct PublicKey(VerifyingKey);
 

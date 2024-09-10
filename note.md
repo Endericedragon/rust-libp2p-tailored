@@ -38,7 +38,3 @@ libp2p是一个开源的p2p网络协议栈，自称囊括了对发布-订阅（p
 `misc/`: 提供各种杂项机能的库（Utility libraries）。
 
 `libp2p/examples/`: 一些示例，展示内置的应用层协议（详见`protocols/`）在典型的Transpot配置下是如何使用的。
-
-### libp2p-core代码结构速览
-
-在`cargo metadata`中的标记为`path+file:///home/endericedragon/repos/rust-libp2p-pg/core#libp2p-core@0.39.1`。从名字和文档中不难推断它是libp2p的核心模块，而从其`Cargo.toml`中的记载来看，它定义了rust-libp2p的核心trait和结构体。
