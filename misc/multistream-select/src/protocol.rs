@@ -146,6 +146,7 @@ impl Message {
                 let mut buf = uvi::encode::usize_buffer();
                 let mut encoded = Vec::with_capacity(ps.len());
                 for p in ps {
+                    // 对于其中一个协议，先写消息长度，再写协议名，最后写换行符
                     encoded.extend(uvi::encode::usize(p.0.as_ref().len() + 1, &mut buf)); // +1 for '\n'
                     encoded.extend_from_slice(p.0.as_ref());
                     encoded.push(b'\n')
