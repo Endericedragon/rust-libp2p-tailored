@@ -18,7 +18,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-use bytes::{Buf as _, BufMut as _, Bytes, BytesMut};
+use bytes::{Buf as _, BufMut as _, Bytes, BytesMut}; // 逐字节处理连续内存
 use futures::{io::IoSlice, prelude::*};
 use std::{
     convert::TryFrom as _,
@@ -29,6 +29,7 @@ use std::{
 };
 
 const MAX_LEN_BYTES: u16 = 2;
+/// 减掉MAX_LEN_BYTES的目的是，给指示数据长度的u8留位置
 const MAX_FRAME_SIZE: u16 = (1 << (MAX_LEN_BYTES * 8 - MAX_LEN_BYTES)) - 1;
 const DEFAULT_BUFFER_SIZE: usize = 64;
 
@@ -56,14 +57,17 @@ pub struct LengthDelimited<R> {
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 enum ReadState {
     /// We are currently reading the length of the next frame of data.
+    /// 看看下个frame里的数据有多长？
     ReadLength {
         buf: [u8; MAX_LEN_BYTES as usize],
         pos: usize,
     },
     /// We are currently reading the frame of data itself.
+    /// 看看下个frame里的数据是什么？
     ReadData { len: u16, pos: usize },
 }
 
+/// 默认只读长度，不读数据
 impl Default for ReadState {
     fn default() -> Self {
         ReadState::ReadLength {
@@ -115,6 +119,7 @@ impl<R> LengthDelimited<R> {
     ///
     /// After this method returns `Poll::Ready`, the write buffer of frames
     /// submitted to the `Sink` is guaranteed to be empty.
+    /// 凡是poll开头的函数都是给协程调度器用的。
     pub fn poll_write_buffer(
         self: Pin<&mut Self>,
         cx: &mut Context<'_>,
@@ -133,6 +138,7 @@ impl<R> LengthDelimited<R> {
                         "Failed to write buffered frame.",
                     )))
                 }
+                // 已经写入n个字节，那么下次写入就可以跳过n个字节，从还没写入的地方开始写
                 Poll::Ready(Ok(n)) => this.write_buffer.advance(n),
                 Poll::Ready(Err(err)) => return Poll::Ready(Err(err)),
             }
@@ -170,6 +176,7 @@ where
                         Poll::Pending => return Poll::Pending,
                     };
 
+                    // 根据前面的match来看，只有可能在读到至少一个字节后，才会进来到这里
                     if (buf[*pos - 1] & 0x80) == 0 {
                         // MSB is not set, indicating the end of the length prefix.
                         let (len, _) = unsigned_varint::decode::u16(buf).map_err(|e| {
@@ -246,6 +253,7 @@ where
     fn start_send(self: Pin<&mut Self>, item: Bytes) -> Result<(), Self::Error> {
         let this = self.project();
 
+        // 计算获得要发送的消息的长度，放到消息头部去。
         let len = match u16::try_from(item.len()) {
             Ok(len) if len <= MAX_FRAME_SIZE => len,
             _ => {
@@ -259,6 +267,7 @@ where
         let mut uvi_buf = unsigned_varint::encode::u16_buffer();
         let uvi_len = unsigned_varint::encode::u16(len, &mut uvi_buf);
         this.write_buffer.reserve(len as usize + uvi_len.len());
+        // 每次发送的消息都是这个结构，即：长度 + 数据
         this.write_buffer.put(uvi_len);
         this.write_buffer.put(item);
 

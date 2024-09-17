@@ -9,6 +9,7 @@
 - [libp2p文档](https://docs.libp2p.io/concepts/introduction/overview/)
 - [rust-libp2p](https://docs.rs/libp2p/0.51.3/libp2p/index.html)
 - [Rust语言圣经 - 异步编程](https://course.rs/advance/async/intro.html)
+- [go-libp2p简介](https://cloud.tencent.com/developer/article/1988253)
 
 当前阶段的任务是：
 
@@ -38,3 +39,11 @@ libp2p是一个开源的p2p网络协议栈，自称囊括了对发布-订阅（p
 `misc/`: 提供各种杂项机能的库（Utility libraries）。
 
 `libp2p/examples/`: 一些示例，展示内置的应用层协议（详见`protocols/`）在典型的Transpot配置下是如何使用的。
+
+## 名词解释
+
+`multiaddr`：一种用来标识终端网络地址的方法，类似于这个样子：`/ip4/127.0.0.1/tcp/1234/p2p/Qmcgpsy`。可以看到它包含的信息十分丰富，不仅包含IPv4地址，还包含了端口号、p2p协议的标识符等信息。
+
+`multistream-select`：一种用于协议协商的协议。通信双方使用这个协议协商出之后通信使用的协议，然后采用那个协议进行下一步通讯。这样做的好处是，可以让libp2p支持尽可能多的协议，而且不会引起不知道用哪个协议的混乱。
+
+`Stream Multiplexing`：一种复用数据流（Stream）的方法，能够在一个流上创建很多虚拟的子流，提高流的使用效率，其效果有点类似于CPU的多进程，每个进程都感觉自己独占了CPU，尽管实际上CPU核心就那么几个。详情请参阅[Multistream Overview](https://docs.libp2p.io/concepts/multiplex/overview/)。
