@@ -62,6 +62,8 @@ async_std::task::block_on(async move {
 
 这个文件里的内容不多，接下来我们去看看它的5个模块吧。
 
+![alt text](5_mods.png)
+
 ## length_delimited模块
 
 这是所有5个模块中唯一一个没有对外暴露的模块，即：这个模块是供multistream-select库内部使用的。我们就从它开始研究。
@@ -78,7 +80,9 @@ async_std::task::block_on(async move {
 
 ## protocol模块
 
-好亲切，一开头就是`multistream-select`协议中见过的概念。
+该模块实现了`multistream-select`协议。这个协议的详细工作流程已在上文介绍，这里补充说明一个点：协议的每条消息（对应`Message`结构）都包含两节，第一节是个`u8`大小的字段，表示信息的长度；第二节是具体的消息内容。
+
+该模块将`LengthDelimited`进一步包装成`MessageIO`、将`LengthDelimitedReader`进一步包装成`MessageRead`。另外实现了`poll_stream`函数，用于从一个异步数据流中读取`Message`结构。
 
 ## dialer_select模块
 
