@@ -84,10 +84,41 @@ async_std::task::block_on(async move {
 
 该模块将`LengthDelimited`进一步包装成`MessageIO`、将`LengthDelimitedReader`进一步包装成`MessageRead`。另外实现了`poll_stream`函数，用于从一个异步数据流中读取`Message`结构。
 
+## negotiated模块
+
+本模块的核心数据结构是`Negotiated`结构体。其中，又以`Negotiated::poll`这一静态方法为核心。这个静态方法负责实现协商中的两个重要环节：
+
+- 对方是Dialer，且对方主动想和我方协商；
+- 对方是Listener，我方提出建议的协议之后，对方肯定了这个提议。
+
+最后，进一步将这个结构体包装入`NegotiatedComplete`结构体中，为其实现`Future` trait，以便实现异步的协议协商。
+
 ## dialer_select模块
 
+该模块描述了协议协商过程中主送方Dialer的行为。
+
+`dialer_select_proto`函数接受一个迭代器，里面是Dialer所支持的协议。它返回一个`DialerSelectFuture`结构体。
+
+```rust
+pub struct DialerSelectFuture<R, I: Iterator> {
+    protocols: iter::Peekable<I>, // 包含好多协议的迭代器
+    state: State<R, I::Item>, // 协商的状态如何了？
+    version: Version, // 协商协议的版本，只可能是V1或V1Lazy
+}
+```
+
+在Dialer看来，协商过程有四种状态：
+
+```rust
+enum State<R, N> {
+    SendHeader { io: MessageIO<R> },
+    SendProtocol { io: MessageIO<R>, protocol: N },
+    FlushProtocol { io: MessageIO<R>, protocol: N },
+    AwaitProtocol { io: MessageIO<R>, protocol: N },
+    Done,
+}
+```
+
+这些状态在为`DialerSelectFuture`实现`Future`时派上了用场。针对每一种状况的行为均已记载在`loop { match mem::replace(this.state, State::Done) { ... } }`中了。
+
 ## listener_select模块
-
-
-
-## negotiated模块

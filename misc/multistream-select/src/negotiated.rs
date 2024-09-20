@@ -47,6 +47,7 @@ use std::{
 #[pin_project]
 #[derive(Debug)]
 pub struct Negotiated<TInner> {
+    /// 表征协议协商的状态如何。只可能是Expecting、Completed或Invalid。
     #[pin]
     state: State<TInner>,
 }
@@ -120,6 +121,7 @@ impl<TInner> Negotiated<TInner> {
             Poll::Ready(Err(e)) => {
                 // If the remote closed the stream, it is important to still
                 // continue reading the data that was sent, if any.
+                // 只有WriteZero错误才能受到豁免，因为还要继续读没读完的数据。
                 if e.kind() != io::ErrorKind::WriteZero {
                     return Poll::Ready(Err(e.into()));
                 }
@@ -140,9 +142,11 @@ impl<TInner> Negotiated<TInner> {
                     header,
                     protocol,
                 } => {
+                    // 从io中读一条信息试试
                     let msg = match Pin::new(&mut io).poll_next(cx)? {
                         Poll::Ready(Some(msg)) => msg,
                         Poll::Pending => {
+                            // 恢复mem::replace之前的状态。
                             *this.state = State::Expecting {
                                 io,
                                 header,
@@ -151,6 +155,7 @@ impl<TInner> Negotiated<TInner> {
                             return Poll::Pending;
                         }
                         Poll::Ready(None) => {
+                            // 啥也没读出来，说明对方已经关闭了连接。
                             return Poll::Ready(Err(ProtocolError::IoError(
                                 io::ErrorKind::UnexpectedEof.into(),
                             )
@@ -158,6 +163,7 @@ impl<TInner> Negotiated<TInner> {
                         }
                     };
 
+                    // 收到了一条Header信息，说明对方是dialer，想和我方进行协议协商。
                     if let Message::Header(h) = &msg {
                         if Some(h) == header.as_ref() {
                             *this.state = State::Expecting {
@@ -169,6 +175,7 @@ impl<TInner> Negotiated<TInner> {
                         }
                     }
 
+                    // 收到了一条Protocol信息，说明对方是listener，肯定了我们的提议。
                     if let Message::Protocol(p) = &msg {
                         if p.as_ref() == protocol.as_ref() {
                             log::debug!("Negotiated: Received confirmation for protocol: {}", p);

@@ -98,6 +98,7 @@ where
         loop {
             match mem::replace(this.state, State::Done) {
                 State::SendHeader { mut io } => {
+                    // 先检查底层的io，是否做好数据传输的准备？
                     match Pin::new(&mut io).poll_ready(cx)? {
                         Poll::Ready(()) => {}
                         Poll::Pending => {
@@ -106,19 +107,24 @@ where
                         }
                     }
 
+                    // 向Listener发送协议协商协议的版本信息，一次协议协商正式开始
                     let h = HeaderLine::from(*this.version);
                     if let Err(err) = Pin::new(&mut io).start_send(Message::Header(h)) {
                         return Poll::Ready(Err(From::from(err)));
                     }
 
+                    // 发送自己支持的第一个协议
                     let protocol = this.protocols.next().ok_or(NegotiationError::Failed)?;
 
                     // The dialer always sends the header and the first protocol
                     // proposal in one go for efficiency.
+                    // 将自身状态切换到SendProtocol，表示自己打算发送一个协议建议，具体从哪个io通道发送，发送的是哪个协议，都写在SendProtocol中
                     *this.state = State::SendProtocol { io, protocol };
                 }
 
+                // 书接上文，此时Dialer打算发送一个协议
                 State::SendProtocol { mut io, protocol } => {
+                    // 按照国际惯例，检查底层io是否准备好做数据传输？
                     match Pin::new(&mut io).poll_ready(cx)? {
                         Poll::Ready(()) => {}
                         Poll::Pending => {
@@ -127,12 +133,14 @@ where
                         }
                     }
 
+                    // 发送协议作为提议，准确地说是将要发送的信息加入发送缓冲区
                     let p = Protocol::try_from(protocol.as_ref())?;
                     if let Err(err) = Pin::new(&mut io).start_send(Message::Protocol(p.clone())) {
                         return Poll::Ready(Err(From::from(err)));
                     }
                     log::debug!("Dialer: Proposed protocol: {}", p);
 
+                    // 如果自己还有其他支持的协议，则切换到FlushProtocol状态；否则根据版本号的不同进行不同行为
                     if this.protocols.peek().is_some() {
                         *this.state = State::FlushProtocol { io, protocol }
                     } else {
@@ -152,6 +160,7 @@ where
                     }
                 }
 
+                // 书接上文，此时Dialer准备要发送一个协议
                 State::FlushProtocol { mut io, protocol } => {
                     match Pin::new(&mut io).poll_flush(cx)? {
                         Poll::Ready(()) => *this.state = State::AwaitProtocol { io, protocol },
@@ -161,8 +170,9 @@ where
                         }
                     }
                 }
-
+                // 书接上文，此时Dialer已经发送了一个协议，等待对方的确认
                 State::AwaitProtocol { mut io, protocol } => {
+                    // 从Listener那里收一个信息来瞅瞅
                     let msg = match Pin::new(&mut io).poll_next(cx)? {
                         Poll::Ready(Some(msg)) => msg,
                         Poll::Pending => {
@@ -176,14 +186,17 @@ where
                     };
 
                     match msg {
+                        // Listener给了我一个版本号？确认一下和我方是否一致
                         Message::Header(v) if v == HeaderLine::from(*this.version) => {
                             *this.state = State::AwaitProtocol { io, protocol };
                         }
+                        // Listener返回给我一个协议，说明它接受了我的提议
                         Message::Protocol(ref p) if p.as_ref() == protocol.as_ref() => {
                             log::debug!("Dialer: Received confirmation for protocol: {}", p);
                             let io = Negotiated::completed(io.into_inner());
                             return Poll::Ready(Ok((protocol, io)));
                         }
+                        // Listener表示它不接受我们的提议，那么我方应该再提议一次
                         Message::NotAvailable => {
                             log::debug!(
                                 "Dialer: Received rejection of protocol: {}",
