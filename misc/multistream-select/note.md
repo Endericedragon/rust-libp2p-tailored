@@ -122,3 +122,42 @@ enum State<R, N> {
 这些状态在为`DialerSelectFuture`实现`Future`时派上了用场。针对每一种状况的行为均已记载在`loop { match mem::replace(this.state, State::Done) { ... } }`中了。
 
 ## listener_select模块
+
+该模块的整体布局也和DialerSelect类似，其站在Listener的角度，定义了`ListenerSelectFuture`结构体以进行协议协商，同时也定义了`State`枚举，表示Listener在协议协商中的状态。通过`loop`和`match`组合拳，实现了不同状态下Listener的不同回应。下文将配合注释，解释各状态的含义。
+
+```rust
+enum State<R, N> {
+    // 从Dialer收到了Header信息。
+    // 首先检查Header是否合法，若合法，跳转到SendHeader状态。
+    RecvHeader {
+        io: MessageIO<R>,
+    },
+    // 调用start_send函数，准备发送自己的Header信息，
+    // 并跳转到Flush状态。注意此时协议协商未完成，因此使用的协议暂定为None。
+    SendHeader {
+        io: MessageIO<R>,
+    },
+    // 首先进行合法性判断，若不合法则报告错误原因，协商狮白。
+    // 否则，根据收到消息的不同（ls请求或一个具体建议）执行不同操作，
+    // 并跳转到SendMessage状态。
+    // - ls：返回自己支持的所有协议
+    // - 具体建议：若己方支持建议的协议，则复读以示肯定；否则返回NA。
+    RecvMessage {
+        io: MessageIO<R>,
+    },
+    // 根据发送的消息来设置自身的last_sent_na字段。
+    // 然后，调用start_send函数并跳转至Flush状态。
+    SendMessage {
+        io: MessageIO<R>,
+        message: Message,
+        protocol: Option<N>,
+    },
+    // 发送消息。若已确定使用的协议，则使用该协议发送确认信息；
+    // 否则跳转到RecvMessage状态。
+    Flush {
+        io: MessageIO<R>,
+        protocol: Option<N>,
+    },
+    Done,
+}
+```
