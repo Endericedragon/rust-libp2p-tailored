@@ -43,6 +43,8 @@ static_assertions::const_assert!(mem::size_of::<usize>() <= mem::size_of::<u64>(
 pub struct RwStreamSink<S: TryStream> {
     #[pin]
     inner: S,
+    // Cursor将&[u8]封装得像一个Buffer一样，可以读写。
+    // 该字段只在AsyncRead中发挥作用。
     current_item: Option<std::io::Cursor<<S as TryStream>::Ok>>,
 }
 
@@ -70,11 +72,13 @@ where
 
         // Grab the item to copy from.
         let item_to_copy = loop {
+            // 有点像取合法下标
             if let Some(ref mut i) = this.current_item {
                 if i.position() < i.get_ref().as_ref().len() as u64 {
                     break i;
                 }
             }
+            // 从Stream中取一个新item
             *this.current_item = Some(match ready!(this.inner.as_mut().try_poll_next(cx)) {
                 Some(Ok(i)) => std::io::Cursor::new(i),
                 Some(Err(e)) => return Poll::Ready(Err(e)),
