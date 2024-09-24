@@ -74,9 +74,8 @@ pub trait StreamMuxer {
 
     /// Poll for new inbound substreams.
     ///
-    /// This function should be called whenever callers are ready to accept more inbound streams. In
-    /// other words, callers may exercise back-pressure on incoming streams by not calling this
-    /// function if a certain limit is hit.
+    /// Caller准备迎接更多入站数据流时调用。
+    /// 反推可知，当入站数据流数量过多时，应当避免调用该方法。
     fn poll_inbound(
         self: Pin<&mut Self>,
         cx: &mut Context<'_>,
@@ -93,10 +92,8 @@ pub trait StreamMuxer {
     /// After this has returned `Poll::Ready(Ok(()))`, the muxer has become useless and may be safely
     /// dropped.
     ///
-    /// > **Note**: You are encouraged to call this method and wait for it to return `Ready`, so
-    /// >           that the remote is properly informed of the shutdown. However, apart from
-    /// >           properly informing the remote, there is no difference between this and
-    /// >           immediately dropping the muxer.
+    /// > **Note**: 调用该方法将使remote端知道该StreamMuxer已关闭。
+    /// >           除此以外，和直接drop掉这个muxer没有区别。
     fn poll_close(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>>;
 
     /// Poll to allow the underlying connection to make progress.
@@ -105,6 +102,7 @@ pub trait StreamMuxer {
     /// unconditionally. Because it will be called regardless, this function can be used by
     /// implementations to return events about the underlying connection that the caller MUST deal
     /// with.
+    /// 看上去，似乎可以获取自身拥有的connection回传的“事件”。
     fn poll(
         self: Pin<&mut Self>,
         cx: &mut Context<'_>,

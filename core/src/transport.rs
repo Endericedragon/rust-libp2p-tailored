@@ -264,14 +264,14 @@ impl std::fmt::Display for ListenerId {
 
 /// Event produced by [`Transport`]s.
 pub enum TransportEvent<TUpgr, TErr> {
-    /// A new address is being listened on.
+    /// 出现了新的需要监听的地址。
     NewAddress {
         /// The listener that is listening on the new address.
         listener_id: ListenerId,
         /// The new address that is being listened on.
         listen_addr: Multiaddr,
     },
-    /// An address is no longer being listened on.
+    /// 不再监听某个地址。
     AddressExpired {
         /// The listener that is no longer listening on the address.
         listener_id: ListenerId,
@@ -279,6 +279,7 @@ pub enum TransportEvent<TUpgr, TErr> {
         listen_addr: Multiaddr,
     },
     /// A connection is incoming on one of the listeners.
+    /// 从某个Listener收到了一个新的连接。
     Incoming {
         /// The listener that produced the upgrade.
         listener_id: ListenerId,
@@ -289,7 +290,7 @@ pub enum TransportEvent<TUpgr, TErr> {
         /// Address used to send back data to the incoming client.
         send_back_addr: Multiaddr,
     },
-    /// A listener closed.
+    /// Listener跑路了。
     ListenerClosed {
         /// The ID of the listener that closed.
         listener_id: ListenerId,
@@ -297,10 +298,9 @@ pub enum TransportEvent<TUpgr, TErr> {
         /// if the stream produced an error.
         reason: Result<(), TErr>,
     },
-    /// A listener errored.
+    /// Listener出事了。
     ///
-    /// The listener will continue to be polled for new events and the event
-    /// is for informational purposes only.
+    /// 宕机的Listener仍会收到消息，这些发给他的消息仅作通知之用（不再期待来自宕机Listener的回复）
     ListenerError {
         /// The ID of the listener that errored.
         listener_id: ListenerId,
@@ -321,6 +321,7 @@ impl<TUpgr, TErr> TransportEvent<TUpgr, TErr> {
                 send_back_addr,
             } => TransportEvent::Incoming {
                 listener_id,
+                //
                 upgrade: map(upgrade),
                 local_addr,
                 send_back_addr,
