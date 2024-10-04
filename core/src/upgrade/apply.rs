@@ -30,7 +30,7 @@ pub(crate) use multistream_select::Version;
 /// Applies an upgrade to the inbound and outbound direction of a connection or substream.
 pub(crate) fn apply<C, U>(
     conn: C,
-    up: U,
+    up: U, // 要升级到的目标协议
     cp: ConnectedPoint,
     v: Version,
 ) -> Either<InboundUpgradeApply<C, U>, OutboundUpgradeApply<C, U>>
@@ -38,6 +38,7 @@ where
     C: AsyncRead + AsyncWrite + Unpin,
     U: InboundConnectionUpgrade<Negotiated<C>> + OutboundConnectionUpgrade<Negotiated<C>>,
 {
+    // 确定应用升级时到底是出站地升级还是入站地升级，左出右入
     match cp {
         ConnectedPoint::Dialer { role_override, .. } if role_override.is_dialer() => {
             Either::Right(apply_outbound(conn, up, v))
@@ -47,6 +48,7 @@ where
 }
 
 /// Tries to perform an upgrade on an inbound connection or substream.
+/// 为此，构造一个InboundUpgradeApply，并将其状态设置为初始的Init状态。
 pub(crate) fn apply_inbound<C, U>(conn: C, up: U) -> InboundUpgradeApply<C, U>
 where
     C: AsyncRead + AsyncWrite + Unpin,
@@ -61,6 +63,7 @@ where
 }
 
 /// Tries to perform an upgrade on an outbound connection or substream.
+/// 为此，构造一个OutboundUpgradeApply，并将其状态设置为初始的Init状态。
 pub(crate) fn apply_outbound<C, U>(conn: C, up: U, v: Version) -> OutboundUpgradeApply<C, U>
 where
     C: AsyncRead + AsyncWrite + Unpin,
@@ -75,6 +78,7 @@ where
 }
 
 /// Future returned by `apply_inbound`. Drives the upgrade process.
+/// 内含一InboundUpgradeApplyState枚举，表示upgrade的状态，可为Init、Upgrade、Undefined三种状态。
 pub struct InboundUpgradeApply<C, U>
 where
     C: AsyncRead + AsyncWrite + Unpin,
@@ -83,6 +87,7 @@ where
     inner: InboundUpgradeApplyState<C, U>,
 }
 
+/// 表示upgrade的状态，可为Init、Upgrade、Undefined三种状态。
 #[allow(clippy::large_enum_variant)]
 enum InboundUpgradeApplyState<C, U>
 where
@@ -100,6 +105,7 @@ where
     Undefined,
 }
 
+/// 表示InboundUpgradeApply可以在内存中安全地移动。
 impl<C, U> Unpin for InboundUpgradeApply<C, U>
 where
     C: AsyncRead + AsyncWrite + Unpin,
@@ -116,7 +122,10 @@ where
 
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         loop {
+            // 匹配当前升级状态，并将状态设置为Undefined，以便drop释放资源
             match mem::replace(&mut self.inner, InboundUpgradeApplyState::Undefined) {
+                // 处于初始状态，则poll一次内部future进行协商。
+                // 协商成功，则获取可用的目标协议并进入Upgrade状态。
                 InboundUpgradeApplyState::Init {
                     mut future,
                     upgrade,
@@ -133,6 +142,7 @@ where
                         name: info.as_ref().to_owned(),
                     };
                 }
+                // 处于正在升级的状态，则poll一次内部future进行升级。
                 InboundUpgradeApplyState::Upgrade { mut future, name } => {
                     match Future::poll(Pin::new(&mut future), cx) {
                         Poll::Pending => {
