@@ -2,7 +2,7 @@
 
 本文档记录笔者学习rust-libp2p的过程。
 
-当前正在研究的版本是`0.51.3`。一些可能用到的链接罗列如下：
+当前正在研究的版本是`0.53.2`。一些可能用到的链接罗列如下：
 
 - [libp2p官网](https://libp2p.io/)
 - [libp2p实现简介](https://libp2p.io/implementations/)
@@ -29,16 +29,11 @@ libp2p是一个开源的p2p网络协议栈，自称囊括了对发布-订阅（p
 
 - `core/`: libp2p-core核心库的实现。包含了Transport 和 StreamMuxer API，几乎所有其他crate都依赖于它。
 - `transports/`: 运输层协议的实现（例如TCP协议）和协议升级内容（protocol upgrades，例如用于认证加密、压缩等）。基于core库的Transport API实现。
-
-`muxers/`: 是libp2p-core的StreamMuxer接口（原文作interface，笔者猜测应该体现为rust trait）的实现。例如在连接（特别是TCP连接）之上建立的 (sub)stream multiplexing protocols。Multiplexing protocols are (mandatory) Transport upgrades.
-
-`swarm/`: 实现了libp2p-core中定义的NetworkBehaviour和ConnectionHandler的中央接口（central interface）。这两个接口用于实现应用层协议，详见`protocols/`。
-
-`protocols/`: 基于libp2p-swarm的API实现的应用层协议。
-
-`misc/`: 提供各种杂项机能的库（Utility libraries）。
-
-`libp2p/examples/`: 一些示例，展示内置的应用层协议（详见`protocols/`）在典型的Transpot配置下是如何使用的。
+- `muxers/`: 是libp2p-core的StreamMuxer接口（原文作interface，笔者猜测应该体现为rust trait）的实现。例如在连接（特别是TCP连接）之上建立的 (sub)stream multiplexing protocols。Multiplexing protocols are (mandatory) Transport upgrades.
+- `swarm/`: 实现了libp2p-core中定义的NetworkBehaviour和ConnectionHandler的中央接口（central interface）。这两个接口用于实现应用层协议，详见`protocols/`。
+- `protocols/`: 基于libp2p-swarm的API实现的应用层协议。
+- `misc/`: 提供各种杂项机能的库（Utility libraries）。
+- `libp2p/examples/`: 一些示例，展示内置的应用层协议（详见`protocols/`）在典型的Transpot配置下是如何使用的。
 
 ## 名词解释
 
