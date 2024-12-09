@@ -1,0 +1,105 @@
+registry+https://github.com/rust-lang/crates.io-index#ring@0.16.20 {
+  registry+https://github.com/rust-lang/crates.io-index#quinn-proto@0.10.5 {
+    registry+https://github.com/rust-lang/crates.io-index#quinn@0.10.2 {
+      path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/quic#libp2p-quic@0.10.2 {
+        path+file:///home/endericedragon/repos/rust-libp2p-pg/libp2p#0.53.2 {
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/interop-tests#0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/protocols/perf#libp2p-perf@0.3.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/autonat#autonat-example@0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/dcutr#dcutr-example@0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/ipfs-kad#ipfs-kad-example@0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/ipfs-private#ipfs-private-example@0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/misc/server#libp2p-server@0.12.5 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/metrics#metrics-example@0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/identify#identify-example@0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/relay-server#relay-server-example@0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/rendezvous#rendezvous-example@0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/file-sharing#file-sharing-example@0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/distributed-key-value-store#distributed-key-value-store-example@0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/chat#chat-example@0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/ping#ping-example@0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/upnp#upnp-example@0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/browser-webrtc#browser-webrtc-example@0.1.0 {}
+          path+file:///home/endericedragon/repos/rust-libp2p-pg/hole-punching-tests#0.1.0 {}
+        }
+        path+file:///home/endericedragon/repos/rust-libp2p-pg/protocols/perf#libp2p-perf@0.3.0 { ... }
+      }
+    }
+  }
+  path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/tls#libp2p-tls@0.3.0 {
+    path+file:///home/endericedragon/repos/rust-libp2p-pg/interop-tests#0.1.0 { ... }
+    path+file:///home/endericedragon/repos/rust-libp2p-pg/libp2p#0.53.2 { ... }
+    path+file:///home/endericedragon/repos/rust-libp2p-pg/protocols/perf#libp2p-perf@0.3.0 { ... }
+    path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/quic#libp2p-quic@0.10.2 { ... }
+  }
+  registry+https://github.com/rust-lang/crates.io-index#webrtc-dtls@0.8.0 {
+    registry+https://github.com/rust-lang/crates.io-index#webrtc@0.9.0 {
+      path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/webrtc#libp2p-webrtc@0.7.0-alpha {
+        path+file:///home/endericedragon/repos/rust-libp2p-pg/interop-tests#0.1.0 { ... }
+        path+file:///home/endericedragon/repos/rust-libp2p-pg/examples/browser-webrtc#browser-webrtc-example@0.1.0 { ... }
+      }
+    }
+  }
+  registry+https://github.com/rust-lang/crates.io-index#rustls@0.20.8 {
+    registry+https://github.com/rust-lang/crates.io-index#tokio-rustls@0.23.4 {
+      registry+https://github.com/rust-lang/crates.io-index#hyper-rustls@0.23.2 {
+        registry+https://github.com/rust-lang/crates.io-index#fantoccini@0.20.0-rc.4 {
+          registry+https://github.com/rust-lang/crates.io-index#thirtyfour@0.32.0-rc.8 {
+            path+file:///home/endericedragon/repos/rust-libp2p-pg/interop-tests#0.1.0 { ... }
+          }
+        }
+      }
+    }
+    registry+https://github.com/rust-lang/crates.io-index#hyper-rustls@0.23.2 { ... }
+  }
+  registry+https://github.com/rust-lang/crates.io-index#rcgen@0.11.3 {
+    registry+https://github.com/rust-lang/crates.io-index#webrtc-dtls@0.8.0 { ... }
+    path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/tls#libp2p-tls@0.3.0 { ... }
+    path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/websocket#libp2p-websocket@0.43.0 {
+      path+file:///home/endericedragon/repos/rust-libp2p-pg/libp2p#0.53.2 { ... }
+      path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/pnet#libp2p-pnet@0.24.0 {
+        path+file:///home/endericedragon/repos/rust-libp2p-pg/libp2p#0.53.2 { ... }
+      }
+    }
+    registry+https://github.com/rust-lang/crates.io-index#webrtc@0.9.0 { ... }
+    path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/webrtc#libp2p-webrtc@0.7.0-alpha { ... }
+  }
+  registry+https://github.com/rust-lang/crates.io-index#x509-parser@0.15.1 {
+    path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/tls#libp2p-tls@0.3.0 { ... }
+    registry+https://github.com/rust-lang/crates.io-index#rcgen@0.11.3 { ... }
+    registry+https://github.com/rust-lang/crates.io-index#webrtc-dtls@0.8.0 { ... }
+  }
+  registry+https://github.com/rust-lang/crates.io-index#stun@0.5.0 {
+    registry+https://github.com/rust-lang/crates.io-index#turn@0.7.0 {
+      registry+https://github.com/rust-lang/crates.io-index#webrtc-ice@0.10.0 {
+        registry+https://github.com/rust-lang/crates.io-index#webrtc@0.9.0 { ... }
+      }
+      registry+https://github.com/rust-lang/crates.io-index#webrtc@0.9.0 { ... }
+    }
+    registry+https://github.com/rust-lang/crates.io-index#webrtc-ice@0.10.0 { ... }
+    registry+https://github.com/rust-lang/crates.io-index#webrtc@0.9.0 { ... }
+    path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/webrtc#libp2p-webrtc@0.7.0-alpha { ... }
+  }
+  registry+https://github.com/rust-lang/crates.io-index#webrtc@0.9.0 { ... }
+  registry+https://github.com/rust-lang/crates.io-index#turn@0.7.0 { ... }
+  registry+https://github.com/rust-lang/crates.io-index#sct@0.7.0 {
+    registry+https://github.com/rust-lang/crates.io-index#rustls@0.21.9 {
+      registry+https://github.com/rust-lang/crates.io-index#quinn-proto@0.10.5 { ... }
+      path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/tls#libp2p-tls@0.3.0 { ... }
+      registry+https://github.com/rust-lang/crates.io-index#webrtc-dtls@0.8.0 { ... }
+      registry+https://github.com/rust-lang/crates.io-index#quinn@0.10.2 { ... }
+      registry+https://github.com/rust-lang/crates.io-index#webrtc@0.9.0 { ... }
+      registry+https://github.com/rust-lang/crates.io-index#futures-rustls@0.24.0 {
+        path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/tls#libp2p-tls@0.3.0 { ... }
+        path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/websocket#libp2p-websocket@0.43.0 { ... }
+      }
+      path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/quic#libp2p-quic@0.10.2 { ... }
+    }
+    registry+https://github.com/rust-lang/crates.io-index#rustls@0.20.8 { ... }
+  }
+  registry+https://github.com/rust-lang/crates.io-index#webpki@0.22.2 {
+    registry+https://github.com/rust-lang/crates.io-index#tokio-rustls@0.23.4 { ... }
+    registry+https://github.com/rust-lang/crates.io-index#rustls@0.20.8 { ... }
+  }
+  path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/quic#libp2p-quic@0.10.2 { ... }
+}
