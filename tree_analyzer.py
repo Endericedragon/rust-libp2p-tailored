@@ -1,7 +1,6 @@
 from collections import defaultdict, deque
 import json
 from typing import Dict, List, Set, Deque, TextIO
-from sys import stdout
 
 
 METADATA_FILE: str = "metadata.json"

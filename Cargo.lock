@@ -3336,7 +3336,7 @@ dependencies = [
  "libp2p-swarm",
  "libp2p-yamux",
  "rcgen",
- "ring 0.16.20",
+ "ring 0.17.5",
  "rustls 0.21.9",
  "rustls-webpki",
  "thiserror",
