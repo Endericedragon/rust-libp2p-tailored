@@ -34,7 +34,16 @@ for meta_node in metadata["resolve"]["nodes"]:
         dep_index: int = crate_id_2_index(each)
         reversed_dependencies[dep_index].add(crate_index)
 
-ring_0_16_20_index: int = crate_id_2_index(RING_0_16_20_ID)
+def find_def_id_by_name(name: str) -> str:
+    for each in mapping_index2id:
+        if name in each:
+            return each
+    return "404 NOT FOUND"
+
+TARGET_DEF_ID: str = find_def_id_by_name("der-parser")
+print(f"Target Def ID: {TARGET_DEF_ID}")
+
+ring_0_16_20_index: int = crate_id_2_index(TARGET_DEF_ID)
 sub_tree: Dict[int, Set[int]] = dict()
 queue: Deque[int] = deque()
 queue.append(ring_0_16_20_index)
@@ -70,6 +79,6 @@ def dfs(crate_index: int, depth: int, output_io: TextIO):
     else:
         make_space(depth, f"{mapping_index2id[crate_index]} {{}}", output_io)
 
-
-with open("reversed_tree_ring.txt", "w", encoding="utf-8") as f:
+rua: str = TARGET_DEF_ID.rsplit("#")[-1].replace("@", "-")
+with open(f"rtree-{rua}.txt", "w", encoding="utf-8") as f:
     dfs(ring_0_16_20_index, 0, f)

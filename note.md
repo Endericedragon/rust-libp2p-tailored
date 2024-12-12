@@ -35,6 +35,21 @@ libp2p是一个开源的p2p网络协议栈，自称囊括了对发布-订阅（p
 - `misc/`: 提供各种杂项机能的库（Utility libraries）。
 - `libp2p/examples/`: 一些示例，展示内置的应用层协议（详见`protocols/`）在典型的Transpot配置下是如何使用的。
 
+## ring 版本升级计划
+
+[这个issue](https://github.com/briansmith/ring/issues/1765) 已经证明， ring v0.17 及以上即可适配 riscvgc64-unknown-linux-gnu 平台。因此，需要将 rust-libp2p 对 ring v0.16.20 的依赖升级到 v0.17.5 。选择这个版本的原因是， rust-libp2p v0.53.2 已经依赖 ring v0.17.5 。
+
+已经完成升级的模块有：
+
+- transports/tls#libp2p-tls@0.3.0
+- transports/quic#libp2p-quic@0.10.2
+
+正在施工的模块是：webrtc-dtls v0.8.0 。
+
+### webrtc-dtls v0.8.0 改造记录
+
+一个改变是 `EcdsaKeyPair::from_pkcs8` 。[旧版函数签名](https://docs.rs/ring/0.16.20/ring/signature/struct.EcdsaKeyPair.html#method.from_pkcs8) 和 [新版函数签名](https://docs.rs/ring/0.17.5/ring/signature/struct.EcdsaKeyPair.html#method.from_pkcs8) 的对比说明了变化，新版将原本作为局部变量的 `rng` 改为了方法参数。参考旧版的写法补全即可。
+
 ## 名词解释
 
 `multiaddr`：一种用来标识终端网络地址的方法，类似于这个样子：`/ip4/127.0.0.1/tcp/1234/p2p/Qmcgpsy`。可以看到它包含的信息十分丰富，不仅包含IPv4地址，还包含了端口号、p2p协议的标识符等信息。

@@ -3128,7 +3128,7 @@ dependencies = [
  "quickcheck",
  "quinn",
  "rand 0.8.5",
- "ring 0.16.20",
+ "ring 0.17.5",
  "rustls 0.21.9",
  "socket2 0.5.5",
  "thiserror",
@@ -4549,8 +4549,6 @@ dependencies = [
 [[package]]
 name = "quinn"
 version = "0.10.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8cc2c5017e4b43d5995dcea317bc46c1e09404c0a9664d2908f7f02dfe943d75"
 dependencies = [
  "async-io 1.13.0",
  "async-std",
@@ -4569,12 +4567,10 @@ dependencies = [
 [[package]]
 name = "quinn-proto"
 version = "0.10.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2c78e758510582acc40acb90458401172d41f1016f8c9dde89e49677afb7eec1"
 dependencies = [
  "bytes",
  "rand 0.8.5",
- "ring 0.16.20",
+ "ring 0.17.5",
  "rustc-hash",
  "rustls 0.21.9",
  "slab",
