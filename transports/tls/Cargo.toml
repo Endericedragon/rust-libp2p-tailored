@@ -13,7 +13,8 @@ futures = { version = "0.3.29", default-features = false }
 futures-rustls = "0.24.0"
 libp2p-core = { workspace = true }
 libp2p-identity = { workspace = true }
-rcgen = "0.11.3"
+# rcgen = "0.11.3"
+rcgen = { path = "../../../rcgen-0.11.3" }
 # ring = "0.16.20"
 ring = "0.17.5"
 thiserror = "1.0.50"
@@ -25,13 +26,21 @@ yasna = "0.5.2"
 [dependencies.rustls]
 version = "0.21.9"
 default-features = false
-features = ["dangerous_configuration"] # Must enable this to allow for custom verification code.
+features = [
+    "dangerous_configuration"
+] # Must enable this to allow for custom verification code.
 
 [dev-dependencies]
 hex = "0.4.3"
 hex-literal = "0.4.1"
 libp2p-core = { workspace = true }
-libp2p-identity = { workspace = true, features = ["ed25519", "rsa", "secp256k1", "ecdsa", "rand"] }
+libp2p-identity = { workspace = true, features = [
+    "ed25519",
+    "rsa",
+    "secp256k1",
+    "ecdsa",
+    "rand"
+] }
 libp2p-swarm = { workspace = true, features = ["tokio"] }
 libp2p-yamux = { workspace = true }
 tokio = { version = "1.34.0", features = ["full"] }

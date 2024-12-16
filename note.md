@@ -39,16 +39,34 @@ libp2p是一个开源的p2p网络协议栈，自称囊括了对发布-订阅（p
 
 [这个issue](https://github.com/briansmith/ring/issues/1765) 已经证明， ring v0.17 及以上即可适配 riscvgc64-unknown-linux-gnu 平台。因此，需要将 rust-libp2p 对 ring v0.16.20 的依赖升级到 v0.17.5 。选择这个版本的原因是， rust-libp2p v0.53.2 已经依赖 ring v0.17.5 。
 
-已经完成升级的模块有：
+已经完成 "ring版本升级" 改造的模块有：
 
-- transports/tls#libp2p-tls@0.3.0
-- transports/quic#libp2p-quic@0.10.2
+- transports/tls#libp2p-tls@0.3.0 （升级ring）
+- transports/quic#libp2p-quic@0.10.2 （升级ring）
+- webrtc-dtls v0.8.0 （整体升级到0.9.0）
 
-正在施工的模块是：webrtc-dtls v0.8.0 。
+正在施工的模块是：x509-parser@0.15.1 。
 
-### webrtc-dtls v0.8.0 改造记录
+### rcgen 0.11.3 改造记录
 
 一个改变是 `EcdsaKeyPair::from_pkcs8` 。[旧版函数签名](https://docs.rs/ring/0.16.20/ring/signature/struct.EcdsaKeyPair.html#method.from_pkcs8) 和 [新版函数签名](https://docs.rs/ring/0.17.5/ring/signature/struct.EcdsaKeyPair.html#method.from_pkcs8) 的对比说明了变化，新版将原本作为局部变量的 `rng` 改为了方法参数。参考旧版的写法补全即可。
+
+另一个变化则在于 ring 的接口变化。对于类型 `ring::error::KeyRejected` ，原本的 `description_` 方法在 v0.17 中被移除了。因此，需要用 `unsafe` 块 获取错误信息。
+
+```rust
+impl From<ring::error::KeyRejected> for RcgenError {
+	fn from(err: ring::error::KeyRejected) -> Self {
+		let bruh: &'static str;
+		unsafe {
+			bruh = *(&err as *const KeyRejected as *const &'static str);
+		}
+        // 原来是RcgenError::RingKeyRejected(err.description_())
+		RcgenError::RingKeyRejected(bruh)
+	}
+}
+```
+
+还有一个变化，rcgen依赖了自己的webrtc库，而这个webrtc库和我们本地的webrtc库虽然版本一样，但Cargo不这么认为。因此最终还是把rcgen中的依赖改成了本地的依赖，冲突问题才算解决。
 
 ## 名词解释
 
