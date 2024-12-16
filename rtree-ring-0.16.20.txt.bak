@@ -40,7 +40,7 @@ registry+https://github.com/rust-lang/crates.io-index#ring@0.16.20 {
       }
     }
   }
-  registry+https://github.com/rust-lang/crates.io-index#rustls@0.20.8 {
+  registry+https://github.com/rust-lang/crates.io-index#rustls@0.20.8 [x] {
     registry+https://github.com/rust-lang/crates.io-index#tokio-rustls@0.23.4 {
       registry+https://github.com/rust-lang/crates.io-index#hyper-rustls@0.23.2 {
         registry+https://github.com/rust-lang/crates.io-index#fantoccini@0.20.0-rc.4 {
@@ -64,10 +64,10 @@ registry+https://github.com/rust-lang/crates.io-index#ring@0.16.20 {
     registry+https://github.com/rust-lang/crates.io-index#webrtc@0.9.0 [x] { ... }
     path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/webrtc#libp2p-webrtc@0.7.0-alpha [x] { ... }
   }
-  registry+https://github.com/rust-lang/crates.io-index#x509-parser@0.15.1 {
-    path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/tls#libp2p-tls@0.3.0 { ... }
-    registry+https://github.com/rust-lang/crates.io-index#rcgen@0.11.3 { ... }
-    registry+https://github.com/rust-lang/crates.io-index#webrtc-dtls@0.8.0 { ... }
+  registry+https://github.com/rust-lang/crates.io-index#x509-parser@0.15.1 [x] {
+    path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/tls#libp2p-tls@0.3.0 [x] { ... }
+    registry+https://github.com/rust-lang/crates.io-index#rcgen@0.11.3 [x] { ... }
+    registry+https://github.com/rust-lang/crates.io-index#webrtc-dtls@0.8.0 [x] { ... }
   }
   registry+https://github.com/rust-lang/crates.io-index#stun@0.5.0 {
     registry+https://github.com/rust-lang/crates.io-index#turn@0.7.0 {
@@ -80,7 +80,7 @@ registry+https://github.com/rust-lang/crates.io-index#ring@0.16.20 {
     registry+https://github.com/rust-lang/crates.io-index#webrtc@0.9.0 { ... }
     path+file:///home/endericedragon/repos/rust-libp2p-pg/transports/webrtc#libp2p-webrtc@0.7.0-alpha { ... }
   }
-  registry+https://github.com/rust-lang/crates.io-index#webrtc@0.9.0 { ... }
+  registry+https://github.com/rust-lang/crates.io-index#webrtc@0.9.0 [x] { ... }
   registry+https://github.com/rust-lang/crates.io-index#turn@0.7.0 { ... }
   registry+https://github.com/rust-lang/crates.io-index#sct@0.7.0 {
     registry+https://github.com/rust-lang/crates.io-index#rustls@0.21.9 {

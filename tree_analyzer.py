@@ -40,7 +40,7 @@ def find_def_id_by_name(name: str) -> str:
             return each
     return "404 NOT FOUND"
 
-TARGET_DEF_ID: str = find_def_id_by_name("der-parser")
+TARGET_DEF_ID: str = find_def_id_by_name("ring@0.16")
 print(f"Target Def ID: {TARGET_DEF_ID}")
 
 ring_0_16_20_index: int = crate_id_2_index(TARGET_DEF_ID)
