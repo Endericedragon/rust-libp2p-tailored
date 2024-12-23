@@ -3,7 +3,7 @@ import json
 from typing import Dict, List, Set, Deque, TextIO
 
 
-METADATA_FILE: str = "metadata.json"
+METADATA_FILE: str = "new_metadata.json"
 RING_0_16_20_ID: str = (
     "registry+https://github.com/rust-lang/crates.io-index#ring@0.16.20"
 )

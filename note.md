@@ -45,7 +45,7 @@ libp2p是一个开源的p2p网络协议栈，自称囊括了对发布-订阅（p
 - transports/quic#libp2p-quic@0.10.2 （升级ring）
 - webrtc-dtls v0.8.0 （整体升级到0.9.0）
 
-正在施工的模块是：x509-parser@0.15.1 。
+正在施工的模块是：[sct@0.7.0](registry+https://github.com/rust-lang/crates.io-index#sct@0.7.0) 。
 
 ### rcgen 0.11.3 改造记录
 
@@ -67,6 +67,10 @@ impl From<ring::error::KeyRejected> for RcgenError {
 ```
 
 还有一个变化，rcgen依赖了自己的webrtc库，而这个webrtc库和我们本地的webrtc库虽然版本一样，但Cargo不这么认为。因此最终还是把rcgen中的依赖改成了本地的依赖，冲突问题才算解决。
+
+### sct@0.7.0 改造记录
+
+该库本身的改造非常简单，但其上级依赖（webrtc-dtls@0.9.0）非常变态。值得注意的是，若使用 nightly-2024-02-03 编译，将会出现 unstable feature 和 unknown feature 的警告。此时，使用更新的 nightly-2024-05-02 版本即可通过编译。此外，webrtc-dtls@0.9.0 库的 example 压根没法跑，一跑就提示 `hub` 找不着，关键是找遍了 Cargo.toml 也没找着这个 `hub` 究竟是何方神圣，因此笔者直接删除了所有 example ，总算是通过了编译并跑通了所有 tests 。
 
 ## 名词解释
 

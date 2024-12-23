@@ -1679,7 +1679,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "35bd3cf68c183738046838e300353e4716c674dc5e56890de4826801a6622a28"
 dependencies = [
  "futures-io",
- "rustls 0.21.9",
+ "rustls 0.21.9 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -3240,7 +3240,7 @@ dependencies = [
  "quinn",
  "rand 0.8.5",
  "ring 0.17.5",
- "rustls 0.21.9",
+ "rustls 0.21.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "socket2 0.5.5",
  "thiserror",
  "tokio",
@@ -3448,7 +3448,7 @@ dependencies = [
  "libp2p-yamux",
  "rcgen 0.11.3",
  "ring 0.17.5",
- "rustls 0.21.9",
+ "rustls 0.21.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustls-webpki 0.101.7",
  "thiserror",
  "tokio",
@@ -3501,7 +3501,7 @@ dependencies = [
  "rand 0.8.5",
  "rcgen 0.11.3",
  "serde",
- "stun",
+ "stun 0.5.0",
  "thiserror",
  "tinytemplate",
  "tokio",
@@ -4651,7 +4651,7 @@ dependencies = [
  "quinn-proto",
  "quinn-udp",
  "rustc-hash",
- "rustls 0.21.9",
+ "rustls 0.21.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "thiserror",
  "tokio",
  "tracing",
@@ -4665,7 +4665,7 @@ dependencies = [
  "rand 0.8.5",
  "ring 0.17.5",
  "rustc-hash",
- "rustls 0.21.9",
+ "rustls 0.21.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "slab",
  "thiserror",
  "tinyvec",
@@ -5232,13 +5232,23 @@ dependencies = [
 [[package]]
 name = "rustls"
 version = "0.21.9"
+dependencies = [
+ "log",
+ "ring 0.17.5",
+ "rustls-webpki 0.101.7",
+ "sct 0.7.0",
+]
+
+[[package]]
+name = "rustls"
+version = "0.21.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "629648aced5775d558af50b2b4c7b02983a04b312126d45eeead26e7caa498b9"
 dependencies = [
  "log",
  "ring 0.17.5",
  "rustls-webpki 0.101.7",
- "sct",
+ "sct 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -5351,6 +5361,14 @@ name = "scopeguard"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
+
+[[package]]
+name = "sct"
+version = "0.7.0"
+dependencies = [
+ "ring 0.17.5",
+ "untrusted 0.7.1",
+]
 
 [[package]]
 name = "sct"
@@ -5764,6 +5782,23 @@ dependencies = [
  "quote",
  "rustversion",
  "syn 2.0.90",
+]
+
+[[package]]
+name = "stun"
+version = "0.5.0"
+dependencies = [
+ "base64 0.21.5",
+ "crc",
+ "lazy_static",
+ "md-5",
+ "rand 0.8.5",
+ "ring 0.17.5",
+ "subtle",
+ "thiserror",
+ "tokio",
+ "url",
+ "webrtc-util",
 ]
 
 [[package]]
@@ -6344,7 +6379,7 @@ dependencies = [
  "md-5",
  "rand 0.8.5",
  "ring 0.17.5",
- "stun",
+ "stun 0.5.1",
  "thiserror",
  "tokio",
  "tokio-util",
@@ -6725,7 +6760,7 @@ dependencies = [
  "serde_json",
  "sha2 0.10.8",
  "smol_str",
- "stun",
+ "stun 0.5.1",
  "thiserror",
  "time",
  "tokio",
@@ -6759,8 +6794,6 @@ dependencies = [
 [[package]]
 name = "webrtc-dtls"
 version = "0.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "188ce061a2371bdf4df54b136c89a6df243ed0ef6b03431b4bd18482cd718dfe"
 dependencies = [
  "aes",
  "aes-gcm",
@@ -6806,7 +6839,7 @@ dependencies = [
  "rand 0.8.5",
  "serde",
  "serde_json",
- "stun",
+ "stun 0.5.1",
  "thiserror",
  "tokio",
  "turn",
