@@ -24,7 +24,8 @@ quinn = { path = "../../../deps/quinn-0.10.2", default-features = false, feature
     "futures-io"
 ] }
 rand = "0.8.5"
-rustls = { version = "0.21.9", default-features = false }
+# rustls = { version = "0.21.9", default-features = false }
+rustls = { path = "../../../deps/rustls-0.21.9", default-features = false }
 thiserror = "1.0.50"
 tokio = { version = "1.34.0", default-features = false, features = [
     "net",

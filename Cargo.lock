@@ -1675,11 +1675,9 @@ dependencies = [
 [[package]]
 name = "futures-rustls"
 version = "0.24.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "35bd3cf68c183738046838e300353e4716c674dc5e56890de4826801a6622a28"
 dependencies = [
  "futures-io",
- "rustls 0.21.9 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustls 0.21.9",
 ]
 
 [[package]]
@@ -2958,7 +2956,7 @@ dependencies = [
  "quick-protobuf",
  "quickcheck-ext",
  "rand 0.8.5",
- "ring 0.17.5",
+ "ring",
  "rmp-serde",
  "sec1",
  "serde",
@@ -3239,8 +3237,8 @@ dependencies = [
  "quickcheck",
  "quinn",
  "rand 0.8.5",
- "ring 0.17.5",
- "rustls 0.21.9 (registry+https://github.com/rust-lang/crates.io-index)",
+ "ring",
+ "rustls 0.21.9",
  "socket2 0.5.5",
  "thiserror",
  "tokio",
@@ -3446,9 +3444,9 @@ dependencies = [
  "libp2p-identity",
  "libp2p-swarm",
  "libp2p-yamux",
- "rcgen 0.11.3",
- "ring 0.17.5",
- "rustls 0.21.9 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rcgen",
+ "ring",
+ "rustls 0.21.9",
  "rustls-webpki 0.101.7",
  "thiserror",
  "tokio",
@@ -3499,7 +3497,7 @@ dependencies = [
  "multihash",
  "quickcheck",
  "rand 0.8.5",
- "rcgen 0.11.3",
+ "rcgen",
  "serde",
  "stun 0.5.0",
  "thiserror",
@@ -3567,7 +3565,7 @@ dependencies = [
  "libp2p-tcp",
  "parking_lot",
  "pin-project-lite",
- "rcgen 0.11.3",
+ "rcgen",
  "rw-stream-sink",
  "soketto",
  "tracing",
@@ -4651,7 +4649,7 @@ dependencies = [
  "quinn-proto",
  "quinn-udp",
  "rustc-hash",
- "rustls 0.21.9 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustls 0.21.9",
  "thiserror",
  "tokio",
  "tracing",
@@ -4663,9 +4661,9 @@ version = "0.10.5"
 dependencies = [
  "bytes",
  "rand 0.8.5",
- "ring 0.17.5",
+ "ring",
  "rustc-hash",
- "rustls 0.21.9 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustls 0.21.9",
  "slab",
  "thiserror",
  "tinyvec",
@@ -4792,21 +4790,9 @@ name = "rcgen"
 version = "0.11.3"
 dependencies = [
  "pem",
- "ring 0.17.5",
+ "ring",
  "time",
  "x509-parser 0.15.1",
- "yasna",
-]
-
-[[package]]
-name = "rcgen"
-version = "0.11.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "52c4f3084aa3bc7dfbba4eff4fab2a54db4324965d8872ab933565e6fbd83bc6"
-dependencies = [
- "pem",
- "ring 0.16.20",
- "time",
  "yasna",
 ]
 
@@ -5038,21 +5024,6 @@ dependencies = [
 
 [[package]]
 name = "ring"
-version = "0.16.20"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3053cf52e236a3ed746dfc745aa9cacf1b791d846bdaf412f60a8d7d6e17c8fc"
-dependencies = [
- "cc",
- "libc",
- "once_cell",
- "spin 0.5.2",
- "untrusted 0.7.1",
- "web-sys",
- "winapi",
-]
-
-[[package]]
-name = "ring"
 version = "0.17.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fb0205304757e5d899b9c2e448b867ffd03ae7f988002e47cd24954391394d0b"
@@ -5060,7 +5031,7 @@ dependencies = [
  "cc",
  "getrandom 0.2.11",
  "libc",
- "spin 0.9.8",
+ "spin",
  "untrusted 0.9.0",
  "windows-sys 0.48.0",
 ]
@@ -5234,21 +5205,9 @@ name = "rustls"
 version = "0.21.9"
 dependencies = [
  "log",
- "ring 0.17.5",
+ "ring",
  "rustls-webpki 0.101.7",
- "sct 0.7.0",
-]
-
-[[package]]
-name = "rustls"
-version = "0.21.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "629648aced5775d558af50b2b4c7b02983a04b312126d45eeead26e7caa498b9"
-dependencies = [
- "log",
- "ring 0.17.5",
- "rustls-webpki 0.101.7",
- "sct 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sct",
 ]
 
 [[package]]
@@ -5258,7 +5217,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bf4ef73721ac7bcd79b2b315da7779d8fc09718c6b3d2d1b2d94850eb8c18432"
 dependencies = [
  "log",
- "ring 0.17.5",
+ "ring",
  "rustls-pki-types",
  "rustls-webpki 0.102.8",
  "subtle",
@@ -5286,7 +5245,7 @@ version = "0.101.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8b6275d1ee7a1cd780b64aca7726599a1dbc893b1e64144529e55c3c2f745765"
 dependencies = [
- "ring 0.17.5",
+ "ring",
  "untrusted 0.9.0",
 ]
 
@@ -5296,7 +5255,7 @@ version = "0.102.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "64ca1bc8749bd4cf37b5ce386cc146580777b4e8572c7b97baf22c83f444bee9"
 dependencies = [
- "ring 0.17.5",
+ "ring",
  "rustls-pki-types",
  "untrusted 0.9.0",
 ]
@@ -5366,17 +5325,7 @@ checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 name = "sct"
 version = "0.7.0"
 dependencies = [
- "ring 0.17.5",
- "untrusted 0.7.1",
-]
-
-[[package]]
-name = "sct"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d53dcdb7c9f8158937a7981b48accfd39a43af418591a5d008c7b22b5e1b7ca4"
-dependencies = [
- "ring 0.16.20",
+ "ring",
  "untrusted 0.7.1",
 ]
 
@@ -5672,7 +5621,7 @@ dependencies = [
  "chacha20poly1305",
  "curve25519-dalek",
  "rand_core 0.6.4",
- "ring 0.17.5",
+ "ring",
  "rustc_version",
  "sha2 0.10.8",
  "subtle",
@@ -5712,12 +5661,6 @@ dependencies = [
  "rand 0.8.5",
  "sha-1",
 ]
-
-[[package]]
-name = "spin"
-version = "0.5.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6e63cff320ae2c57904679ba7cb63280a3dc4613885beafb148ee7bf9aa9042d"
 
 [[package]]
 name = "spin"
@@ -5793,7 +5736,7 @@ dependencies = [
  "lazy_static",
  "md-5",
  "rand 0.8.5",
- "ring 0.17.5",
+ "ring",
  "subtle",
  "thiserror",
  "tokio",
@@ -5812,7 +5755,7 @@ dependencies = [
  "lazy_static",
  "md-5",
  "rand 0.8.5",
- "ring 0.17.5",
+ "ring",
  "subtle",
  "thiserror",
  "tokio",
@@ -6378,7 +6321,7 @@ dependencies = [
  "log",
  "md-5",
  "rand 0.8.5",
- "ring 0.17.5",
+ "ring",
  "stun 0.5.1",
  "thiserror",
  "tokio",
@@ -6749,9 +6692,9 @@ dependencies = [
  "log",
  "pem",
  "rand 0.8.5",
- "rcgen 0.11.3",
+ "rcgen",
  "regex",
- "ring 0.17.5",
+ "ring",
  "rtcp",
  "rtp",
  "rustls 0.21.9",
@@ -6811,8 +6754,8 @@ dependencies = [
  "pem",
  "rand 0.8.5",
  "rand_core 0.6.4",
- "rcgen 0.11.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "ring 0.17.5",
+ "rcgen",
+ "ring",
  "rustls 0.21.9",
  "sec1",
  "serde",
@@ -7196,7 +7139,7 @@ dependencies = [
  "lazy_static",
  "nom",
  "oid-registry",
- "ring 0.17.5",
+ "ring",
  "rusticata-macros",
  "thiserror",
  "time",
