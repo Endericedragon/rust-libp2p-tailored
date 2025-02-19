@@ -113,8 +113,10 @@ libp2p-websocket = { version = "0.43.0", path = "transports/websocket" }
 libp2p-websocket-websys = { version = "0.3.1", path = "transports/websocket-websys" }
 libp2p-webtransport-websys = { version = "0.2.0", path = "transports/webtransport-websys" }
 libp2p-yamux = { version = "0.45.1", path = "muxers/yamux" }
-multiaddr = "0.18.1"
-multihash = "0.19.1"
+# multiaddr = "0.18.1"
+multiaddr = { path = "../../rust-libp2p-pg/deps/multiaddr-0.18.1" }
+# multihash = "0.19.1"
+multihash = { path = "../../ak_multihash_user", package = "ak_multihash_user" }
 multistream-select = { version = "0.13.0", path = "misc/multistream-select" }
 prometheus-client = "0.22.0"
 quick-protobuf-codec = { version = "0.3.1", path = "misc/quick-protobuf-codec" }
@@ -123,7 +125,6 @@ rw-stream-sink = { version = "0.4.0", path = "misc/rw-stream-sink" }
 unsigned-varint = { version = "0.8.0" }
 
 [patch.crates-io]
-
 # Patch away `libp2p-identity` in our dependency tree with the workspace version.
 # `libp2p-identity` is a leaf dependency and used within `rust-multiaddr` which is **not** part of the workspace.
 # As a result, we cannot just reference the workspace version in our crates because the types would mismatch with what
@@ -141,4 +142,8 @@ clippy.manual_let_else = "warn"
 clippy.dbg_macro = "warn"
 
 [workspace.metadata.release]
-pre-release-hook = ["/bin/sh", '-c', '/bin/sh $WORKSPACE_ROOT/scripts/add-changelog-header.sh'] # Nested use of shell to expand variables.
+pre-release-hook = [
+    "/bin/sh",
+    '-c',
+    '/bin/sh $WORKSPACE_ROOT/scripts/add-changelog-header.sh'
+] # Nested use of shell to expand variables.

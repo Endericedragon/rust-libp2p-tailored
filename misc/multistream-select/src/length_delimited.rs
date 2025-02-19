@@ -484,6 +484,9 @@ mod tests {
         }
     }
 
+    // 上述完全是为了数据编解码，绝对是no-std的
+    // 下面涉及到数据读写，需要寻找no-std的替代方案
+
     #[test]
     fn writing_reading() {
         fn prop(frames: Vec<Vec<u8>>) -> TestResult {

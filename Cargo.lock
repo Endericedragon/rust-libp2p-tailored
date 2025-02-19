@@ -82,6 +82,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "ak_multihash_user"
+version = "0.19.3"
+dependencies = [
+ "arbitrary",
+ "core2",
+ "quickcheck",
+ "rand 0.8.5",
+ "serde",
+ "unsigned-varint 0.8.0",
+]
+
+[[package]]
 name = "allocator-api2"
 version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2779,6 +2791,7 @@ dependencies = [
 name = "libp2p-core"
 version = "0.41.2"
 dependencies = [
+ "ak_multihash_user",
  "async-std",
  "either",
  "fnv",
@@ -2789,7 +2802,6 @@ dependencies = [
  "libp2p-mplex",
  "libp2p-noise",
  "multiaddr",
- "multihash",
  "multistream-select",
  "once_cell",
  "parking_lot",
@@ -2943,6 +2955,7 @@ dependencies = [
 name = "libp2p-identity"
 version = "0.2.8"
 dependencies = [
+ "ak_multihash_user",
  "asn1_der",
  "base64 0.21.5",
  "bs58",
@@ -2951,7 +2964,6 @@ dependencies = [
  "hex-literal",
  "hkdf",
  "libsecp256k1",
- "multihash",
  "p256",
  "quick-protobuf",
  "quickcheck-ext",
@@ -3105,6 +3117,7 @@ dependencies = [
 name = "libp2p-noise"
 version = "0.44.0"
 dependencies = [
+ "ak_multihash_user",
  "asynchronous-codec",
  "bytes",
  "curve25519-dalek",
@@ -3113,7 +3126,6 @@ dependencies = [
  "libp2p-core",
  "libp2p-identity",
  "multiaddr",
- "multihash",
  "once_cell",
  "quick-protobuf",
  "quickcheck-ext",
@@ -3484,6 +3496,7 @@ dependencies = [
 name = "libp2p-webrtc"
 version = "0.7.0-alpha"
 dependencies = [
+ "ak_multihash_user",
  "async-trait",
  "bytes",
  "futures",
@@ -3494,7 +3507,6 @@ dependencies = [
  "libp2p-identity",
  "libp2p-noise",
  "libp2p-webrtc-utils",
- "multihash",
  "quickcheck",
  "rand 0.8.5",
  "rcgen",
@@ -3596,6 +3608,7 @@ dependencies = [
 name = "libp2p-webtransport-websys"
 version = "0.2.0"
 dependencies = [
+ "ak_multihash_user",
  "futures",
  "js-sys",
  "libp2p-core",
@@ -3603,7 +3616,6 @@ dependencies = [
  "libp2p-noise",
  "multiaddr",
  "multibase",
- "multihash",
  "send_wrapper 0.6.0",
  "thiserror",
  "tracing",
@@ -3862,15 +3874,13 @@ dependencies = [
 [[package]]
 name = "multiaddr"
 version = "0.18.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8b852bc02a2da5feed68cd14fa50d0774b92790a5bdbfa932a813926c8472070"
 dependencies = [
+ "ak_multihash_user",
  "arrayref",
  "byteorder",
  "data-encoding",
  "libp2p-identity",
  "multibase",
- "multihash",
  "percent-encoding",
  "serde",
  "static_assertions",
@@ -3887,20 +3897,6 @@ dependencies = [
  "base-x",
  "data-encoding",
  "data-encoding-macro",
-]
-
-[[package]]
-name = "multihash"
-version = "0.19.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "076d548d76a0e2a0d4ab471d0b1c36c577786dfc4471242035d97a12a735c492"
-dependencies = [
- "arbitrary",
- "core2",
- "quickcheck",
- "rand 0.8.5",
- "serde",
- "unsigned-varint 0.7.2",
 ]
 
 [[package]]
@@ -6883,6 +6879,7 @@ dependencies = [
 name = "webtransport-tests"
 version = "0.1.0"
 dependencies = [
+ "ak_multihash_user",
  "futures",
  "getrandom 0.2.11",
  "libp2p-core",
@@ -6890,7 +6887,6 @@ dependencies = [
  "libp2p-noise",
  "libp2p-webtransport-websys",
  "multiaddr",
- "multihash",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "wasm-bindgen-test",

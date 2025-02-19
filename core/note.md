@@ -21,7 +21,9 @@ SUM:                            38            824           1320           4676
 -------------------------------------------------------------------------------
 ```
 
-## connection
+## 代码阅读
+
+### connection
 
 很短，165行。
 
@@ -54,7 +56,7 @@ pub enum ConnectedPoint {
 
 此外，`ConnectedPoint`上还定义了一个奇怪的`is_relayed`方法，该方法用于判断是否为中继节点。其判断依据似乎是：自身的multiaddr是否包含P2pCircuit协议。包含该协议是中继节点的充分必要条件。
 
-## muxing
+### muxing
 
 其核心在于`StreamMuxer` trait。该trait定义了四个异步的“回调”函数，其中：
 
@@ -69,7 +71,7 @@ pub enum ConnectedPoint {
 
 在此基础上，定义`StreamMuxerExt`（Stream Muxer Extension） trait，它扩展了`StreamMuxer` trait，增加了一些方法，为unpin的数据结构也实现了`StreamMuxer` trait的类似功能。值得注意的是，在实现`close`方法时，模块专门写了一个`Close<S>(S)`结构体，并在实现其`Future` trait时，调用了`self.0.poll_close_unpin()`方法。
 
-## transport
+### transport
 
 比较长，568行。本模块的核心是`Transport` trait，其规定了两个方面的接口：
 
@@ -82,7 +84,7 @@ pub enum ConnectedPoint {
 
 定义`TransportEvent`枚举。其中的枚举项的意义已经附在代码上。
 
-## either
+### either
 
 它**直接使用**（而非自行实现）了两种Either：`future::Either`和`either::Either`。这俩Either在作用上差不多，都能包含两种数据类型，类似于`Result<T, E>`。
 
@@ -109,7 +111,7 @@ Result<
 >
 ```
 
-## signed_envelope
+### signed_envelope
 
 核心数据结构如下：
 
@@ -122,7 +124,7 @@ pub struct SignedEnvelope {
 }
 ```
 
-## peer_record
+### peer_record
 
 核心数据结构如下：
 
@@ -139,7 +141,7 @@ pub struct PeerRecord {
 }
 ```
 
-## upgrade
+### upgrade
 
 前文已经提及，libp2p中包含一种upgrade操作，其本质是令通信双方切换到某种协议上去。一次upgrade步骤如下：
 
@@ -186,3 +188,16 @@ pub struct PeerRecord {
 - `pending`：实现了`PendingUpgrade`结构体，无论怎么poll它都返回`Poll::Pending`。类似的还有`ready`模块，无论怎么poll都**立即**返回`Poll::Ready`。
 - `select`：实现一次性执行两个升级。
 
+
+## 内核态移植计划
+
+根据 `sort_result.json` 中的拓扑排序结果，可知想要移植 `core` 库需要先行完成如下库的移植工作：
+
+- misc/futures-bounded
+- identity
+- transports/pnet
+- swarm-derive
+- misc/multistream-select
+- misc/quick-protobuf-codec
+- misc/quickcheck-ext
+- misc/rw-stream-sink

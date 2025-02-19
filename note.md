@@ -37,15 +37,7 @@ libp2p是一个开源的p2p网络协议栈，自称囊括了对发布-订阅（p
 
 ## ring 版本升级计划
 
-[这个issue](https://github.com/briansmith/ring/issues/1765) 已经证明， ring v0.17 及以上即可适配 riscvgc64-unknown-linux-gnu 平台。因此，需要将 rust-libp2p 对 ring v0.16.20 的依赖升级到 v0.17.5 。选择这个版本的原因是， rust-libp2p v0.53.2 已经依赖 ring v0.17.5 。
-
-已经完成 "ring版本升级" 改造的模块有：
-
-- transports/tls#libp2p-tls@0.3.0 （升级ring）
-- transports/quic#libp2p-quic@0.10.2 （升级ring）
-- webrtc-dtls v0.8.0 （整体升级到0.9.0）
-
-正在施工的模块是：[sct@0.7.0](registry+https://github.com/rust-lang/crates.io-index#sct@0.7.0) 。
+[这个issue](https://github.com/briansmith/ring/issues/1765) 已经证明， ring v0.17 及以上即可适配 riscvgc64-unknown-linux-gnu 平台。因此，需要将 rust-libp2p 对 ring v0.16.20 的依赖升级到 v0.17.5 。选择这个版本的原因是， rust-libp2p v0.53.2 已经依赖 ring v0.17.5 。下文将记录一些改造时遇到的问题。
 
 ### rcgen 0.11.3 改造记录
 
@@ -79,3 +71,5 @@ impl From<ring::error::KeyRejected> for RcgenError {
 `multistream-select`：一种用于协议协商的协议。通信双方使用这个协议协商出之后通信使用的协议，然后采用那个协议进行下一步通讯。这样做的好处是，可以让libp2p支持尽可能多的协议，而且不会引起不知道用哪个协议的混乱。
 
 `Stream Multiplexing`：一种复用数据流（Stream）的方法，能够在一个流上创建很多虚拟的子流，提高流的使用效率，其效果有点类似于CPU的多进程，每个进程都感觉自己独占了CPU，尽管实际上CPU核心就那么几个。详情请参阅[Multistream Overview](https://docs.libp2p.io/concepts/multiplex/overview/)。
+
+`quic`协议：一种基于UDP的传输层协议，但由自己的实现机制（重传、顺序接收等）实现了像TCP那样的可靠传输。相比TCP，它具有：多路复用、握手更快、内置加密（TLS 1.3）等优点。QUIC协议不用IP:PORT，而用连接ID（CID）来标识主机。

@@ -29,14 +29,14 @@ use crate::length_delimited::{LengthDelimited, LengthDelimitedReader};
 use crate::Version;
 
 use bytes::{BufMut, Bytes, BytesMut};
+use core::convert::TryFrom;
+use core::error::Error;
+use core::fmt;
+use core::pin::Pin;
+use core::task::{Context, Poll};
 use futures::{io::IoSlice, prelude::*, ready};
-use std::{
-    convert::TryFrom,
-    error::Error,
-    fmt, io,
-    pin::Pin,
-    task::{Context, Poll},
-};
+
+use std::io;
 use unsigned_varint as uvi;
 
 /// The maximum number of supported protocols that can be processed.
@@ -52,6 +52,7 @@ const MSG_LS: &[u8] = b"ls\n";
 /// The multistream-select header lines preceeding negotiation.
 ///
 /// Every [`Version`] has a corresponding header line.
+/// 可以理解为某个协议类。不管是传统V1还是V1Lazy，它们都属于V1这个HeaderLine。
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub(crate) enum HeaderLine {
     /// The `/multistream/1.0.0` header line.

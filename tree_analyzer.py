@@ -3,7 +3,7 @@ import json
 from typing import Dict, List, Set, Deque, TextIO
 
 
-METADATA_FILE: str = "new_metadata.json"
+METADATA_FILE: str = "rust-libp2p-tailored/new_metadata.json"
 RING_0_16_20_ID: str = (
     "registry+https://github.com/rust-lang/crates.io-index#ring@0.16.20"
 )
@@ -11,8 +11,11 @@ RING_0_16_20_ID: str = (
 with open(METADATA_FILE, "rb") as f:
     metadata = json.load(f)
 
+# mapping_id2index[x] = DefID为x的crate的编号
 mapping_id2index: Dict[str, int] = dict()
+# mapping_index2id[x] = 编号为x的crate的DefID
 mapping_index2id: List[str] = list()
+# reversed_dependencies[x] = 所有依赖于 x号crate 的其他crate
 reversed_dependencies: Dict[int, Set[int]] = defaultdict(set)
 
 
@@ -29,10 +32,13 @@ def crate_id_2_index(crate_id: str) -> int:
 for meta_node in metadata["resolve"]["nodes"]:
     crate_id: str = meta_node["id"]
     crate_index: int = crate_id_2_index(crate_id)
-    crate_deps: List[str] = meta_node["dependencies"]
+    crate_deps: List[str] = meta_node["deps"]
     for each in crate_deps:
-        dep_index: int = crate_id_2_index(each)
-        reversed_dependencies[dep_index].add(crate_index)
+        if any(filter(lambda x: x["kind"] is None, each["dep_kinds"])):
+            crate_id: str = each["pkg"]
+            dep_index: int = crate_id_2_index(crate_id)
+            reversed_dependencies[dep_index].add(crate_index)
+
 
 def find_def_id_by_name(name: str) -> str:
     for each in mapping_index2id:
@@ -40,7 +46,8 @@ def find_def_id_by_name(name: str) -> str:
             return each
     return "404 NOT FOUND"
 
-TARGET_DEF_ID: str = find_def_id_by_name("ring@0.16")
+
+TARGET_DEF_ID: str = find_def_id_by_name("idna@1.0.3")
 print(f"Target Def ID: {TARGET_DEF_ID}")
 
 ring_0_16_20_index: int = crate_id_2_index(TARGET_DEF_ID)
@@ -49,6 +56,7 @@ queue: Deque[int] = deque()
 queue.append(ring_0_16_20_index)
 while queue:
     cur_crate_index: int = queue.popleft()
+    # print(cur_crate_index)
     cur_reversed_deps: Set[int] = reversed_dependencies[cur_crate_index]
     sub_tree[cur_crate_index] = cur_reversed_deps
     for each in cur_reversed_deps:
@@ -78,6 +86,7 @@ def dfs(crate_index: int, depth: int, output_io: TextIO):
         make_space(depth, "}", output_io)
     else:
         make_space(depth, f"{mapping_index2id[crate_index]} {{}}", output_io)
+
 
 rua: str = TARGET_DEF_ID.rsplit("#")[-1].replace("@", "-")
 with open(f"rtree-{rua}.txt", "w", encoding="utf-8") as f:
